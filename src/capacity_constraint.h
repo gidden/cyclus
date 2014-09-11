@@ -69,6 +69,7 @@ class CapacityConstraint {
   CapacityConstraint(double capacity, typename Converter<T>::Ptr converter)
       : capacity_(capacity),
         converter_(converter),
+        cap_type_(NONE),
         id_(next_id_++) {
     assert(capacity_ > 0);
   }
@@ -77,6 +78,7 @@ class CapacityConstraint {
   /// that simply returns 1)
   explicit CapacityConstraint(double capacity)
       : capacity_(capacity),
+        cap_type_(NONE),
         id_(next_id_++) {
     converter_ = typename Converter<T>::Ptr(new TrivialConverter<T>());
     assert(capacity_ > 0);
@@ -86,15 +88,23 @@ class CapacityConstraint {
   CapacityConstraint(const CapacityConstraint& other)
       : capacity_(other.capacity_),
         converter_(other.converter_),
+        cap_type_(other.cap_type_),
         id_(next_id_++) {
     assert(capacity_ > 0);
   }
 
-  /// @return the constraints capacity
-  inline double capacity() const {
-    return capacity_;
-  }
-
+  /// capacity getters/setters
+  // @{
+  inline double capacity() const { return capacity_; }
+  inline void capacity(double c) { capacity_ = c; }
+  // @}
+  
+  /// type getters/setters
+  // @{
+  inline cap_t cap_type() const { return cap_type_; }
+  inline void cap_type(cap_t t) const { cap_type_ = t; }
+  // @}
+  
   /// @return the converter
   inline typename Converter<T>::Ptr converter() const {
     return converter_;
@@ -114,6 +124,7 @@ class CapacityConstraint {
 
  private:
   double capacity_;
+  cap_t cap_type_;
   typename Converter<T>::Ptr converter_;
   int id_;
   static int next_id_;
@@ -126,7 +137,8 @@ template<class T>
 inline bool operator==(const CapacityConstraint<T>& lhs,
                        const CapacityConstraint<T>& rhs) {
   return  ((lhs.capacity() == rhs.capacity()) &&
-           (*lhs.converter() == *rhs.converter()));
+           (*lhs.converter() == *rhs.converter()) &&
+           (lhs.cap_type() == rhs.cap_type()));
 }
 
 /// @brief CapacityConstraint-CapacityConstraint comparison operator, allows
