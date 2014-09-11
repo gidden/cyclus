@@ -60,6 +60,9 @@ class GreedyPreconditioner;
 ///   2) All SupplySets are at capacity
 ///
 /// @warning the GreedySolver is responsible for deleting is conditioner!
+/// @warning the GreedySolver does *not* current support CapacityConstraint
+/// capacity types (all request capacities are assumed to be GTEQ and all supply
+/// capacities are assumed to be LTEQ)
 class GreedySolver: public ExchangeSolver {
  public:
   /// GreedySolver constructor
