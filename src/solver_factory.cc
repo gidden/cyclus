@@ -125,7 +125,7 @@ void SolveProg(OsiSolverInterface* si, double greedy_obj, bool verbose) {
 
   if (HasInt(si)) {
     /// @TODO add cbc verbosity flag
-    const char *argv[] = {"exchng", "-log", "0", "-ratio", "0.01",
+    const char *argv[] = {"exchng", "-log", "0", "-ratio", "0.1",
                           "-solve", "-quit"};
     int argc = 7;
     CbcModel model(*si);
