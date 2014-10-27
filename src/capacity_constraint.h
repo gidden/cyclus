@@ -1,10 +1,9 @@
 #ifndef CYCLUS_SRC_CAPACITY_CONSTRAINT_H_
 #define CYCLUS_SRC_CAPACITY_CONSTRAINT_H_
 
-#include <assert.h>
-
 #include <boost/shared_ptr.hpp>
 
+#include "error.h"
 #include "exchange_graph.h"
 #include "exchange_translation_context.h"
 #include "capacity_types.h"
@@ -71,7 +70,8 @@ class CapacityConstraint {
         converter_(converter),
         cap_type_(NONE),
         id_(next_id_++) {
-    assert(capacity_ > 0);
+    if (capacity_ <= 0)
+      throw ValueError("Capacity is not positive, no trades will be executed");
   }
 
   /// @brief constructor for a constraint with a trivial converter (i.e., one
@@ -80,8 +80,9 @@ class CapacityConstraint {
       : capacity_(capacity),
         cap_type_(NONE),
         id_(next_id_++) {
+    if (capacity_ <= 0)
+      throw ValueError("Capacity is not positive, no trades will be executed");
     converter_ = typename Converter<T>::Ptr(new TrivialConverter<T>());
-    assert(capacity_ > 0);
   }
 
   /// @brief constructor for a constraint with a non-trivial converter
@@ -89,9 +90,7 @@ class CapacityConstraint {
       : capacity_(other.capacity_),
         converter_(other.converter_),
         cap_type_(other.cap_type_),
-        id_(next_id_++) {
-    assert(capacity_ > 0);
-  }
+        id_(next_id_++) {}
 
   /// capacity getters/setters
   // @{
