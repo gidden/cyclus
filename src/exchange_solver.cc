@@ -8,6 +8,34 @@
 namespace cyclus {
 
 double ExchangeSolver::PseudoCost(double cost_add) {
+  return SmallCost_(cost_add);
+}
+
+double ExchangeSolver::SmallCost_(double cost_add) {
+  std::vector<RequestGroup::Ptr>::iterator rg_it;
+  std::vector<ExchangeNode::Ptr>::iterator n_it;
+  std::map<Arc, double>::iterator p_it;
+  double coeff, pref;
+  
+  double max_coeff = std::numeric_limits<double>::min();
+  for (rg_it = graph_->request_groups().begin();
+       rg_it != graph_->request_groups().end();
+       ++rg_it) {
+    std::vector<ExchangeNode::Ptr>& nodes = (*rg_it)->nodes();
+    for (n_it = nodes.begin(); n_it != nodes.end(); ++n_it) {
+      std::map<Arc, double>& prefs = (*n_it)->prefs;
+      for (p_it = prefs.begin(); p_it != prefs.end(); ++p_it) {
+        pref = p_it->second;
+        coeff = 1.0 / pref; // add excl val?
+        if (coeff > max_coeff)
+          max_coeff = coeff;
+      }
+    }
+  }
+  return max_coeff + cost_add;
+}
+
+double ExchangeSolver::BigCost_(double cost_add) {
   std::vector<ExchangeNode::Ptr>::iterator n_it;
   std::map<Arc, std::vector<double> >::iterator c_it;
   std::map<Arc, double>::iterator p_it;

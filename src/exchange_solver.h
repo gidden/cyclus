@@ -47,6 +47,9 @@ class ExchangeSolver {
   ExchangeGraph* graph_;
   bool exclusive_orders_;
   bool verbose_;
+
+  double BigCost_(double cost_add);
+  double SmallCost_(double cost_add);
 };
 
 }  // namespace cyclus
