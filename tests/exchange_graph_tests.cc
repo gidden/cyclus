@@ -12,7 +12,7 @@ using cyclus::ExchangeNodeGroup;
 using cyclus::RequestGroup;
 using std::vector;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 TEST(ExGraphTests, ExchangeNodeGroups) {
   ExchangeNode::Ptr n(new ExchangeNode());
   ExchangeNodeGroup s;
@@ -20,7 +20,7 @@ TEST(ExGraphTests, ExchangeNodeGroups) {
   EXPECT_EQ(&s, n->group);
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 TEST(ExGraphTests, ReqGroups) {
   double q = 1.5;
   RequestGroup r;
@@ -29,7 +29,7 @@ TEST(ExGraphTests, ReqGroups) {
   EXPECT_EQ(q, r.qty());
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 TEST(ExGraphTests, AddReqGroup) {
   RequestGroup::Ptr prs(new RequestGroup());
   ExchangeGraph g;
@@ -37,7 +37,7 @@ TEST(ExGraphTests, AddReqGroup) {
   EXPECT_EQ(g.request_groups().at(0), prs);
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 TEST(ExGraphTests, AddSuppGroup) {
   ExchangeNodeGroup::Ptr pss(new ExchangeNodeGroup());
   ExchangeGraph g;
@@ -45,7 +45,7 @@ TEST(ExGraphTests, AddSuppGroup) {
   EXPECT_EQ(g.supply_groups().at(0), pss);
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 TEST(ExGraphTests, AddArc1) {
   ExchangeGraph g;
 
@@ -62,7 +62,7 @@ TEST(ExGraphTests, AddArc1) {
   EXPECT_EQ(exp, g.node_arc_map().at(v));
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 TEST(ExGraphTests, AddArc2) {
   ExchangeGraph g;
 
@@ -97,7 +97,7 @@ TEST(ExGraphTests, AddArc2) {
   EXPECT_EQ(expx, g.node_arc_map().at(x));
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 TEST(ExGraphTests, AddMatch) {
   ExchangeGraph g;
 
