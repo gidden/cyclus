@@ -97,7 +97,14 @@ void pair_double_eq(const std::pair<double, T>& p1,
   EXPECT_EQ(p1.second, p2.second);
   EXPECT_DOUBLE_EQ(p1.first, p2.first);
 }
+// -----------
 
 // -----------
+// Copied mostly from:
+// http://stackoverflow.com/questions/12552277/whats-the-best-way-to-iterate-over-two-or-more-containers-simultaneously
+
+
+// -----------
+
 
 #endif  // CYCLUS_TESTS_EQUALITY_HELPERS_H_

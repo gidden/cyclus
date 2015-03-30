@@ -133,5 +133,9 @@ void ExchangeGraph::AddMatch(const Arc& a, double qty) {
 }
 
 
+std::vector<ExchangeGraph::Ptr> Partition(ExchangeGraph& g) {
+  std::vector<ExchangeGraph::Ptr> ret;
+  return ret;
+}
 
 }  // namespace cyclus

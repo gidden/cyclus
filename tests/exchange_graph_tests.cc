@@ -111,7 +111,6 @@ TEST(ExGraphTests, AddMatch) {
   v->unit_capacities[a].push_back(vval);
 
   double large = 500;
-
   ExchangeNodeGroup::Ptr ugroup(new ExchangeNodeGroup());
   ugroup->AddExchangeNode(u);
   double ucap = uval * 500;
@@ -129,4 +128,67 @@ TEST(ExGraphTests, AddMatch) {
   g.AddMatch(a, qty);
   ASSERT_EQ(1, g.matches().size());
   EXPECT_EQ(match, g.matches().at(0));
+}
+
+TEST(ExGraphTests, Part) {
+  ExchangeGraph g;
+  ExchangeGraph::Ptr gexp1(new ExchangeGraph());
+  ExchangeGraph::Ptr gexp2(new ExchangeGraph());
+  ExchangeGraph::Ptr aexp[] = {gexp1, gexp2};
+  std::set<ExchangeGraph::Ptr> exp(aexp, aexp+2);
+  
+  // supply block
+  ExchangeNode::Ptr u1(new ExchangeNode());
+  ExchangeNodeGroup::Ptr gu1(new ExchangeNodeGroup());
+  gu1->AddExchangeNode(u1);
+  g.AddSupplyGroup(gu1);
+  gexp1->AddSupplyGroup(gu1);
+  ExchangeNode::Ptr u2(new ExchangeNode());
+  ExchangeNodeGroup::Ptr gu2(new ExchangeNodeGroup());
+  gu2->AddExchangeNode(u2);
+  g.AddSupplyGroup(gu2);
+  gexp2->AddSupplyGroup(gu2);
+
+  // request block
+  ExchangeNode::Ptr v1(new ExchangeNode());
+  RequestGroup::Ptr gv1(new RequestGroup());
+  gv1->AddExchangeNode(v1);
+  g.AddRequestGroup(gv1);
+  gexp1->AddRequestGroup(gv1);
+  RequestGroup::Ptr gv2(new RequestGroup());
+  ExchangeNode::Ptr v2(new ExchangeNode());
+  gv2->AddExchangeNode(v2);
+  g.AddRequestGroup(gv2);
+  gexp2->AddRequestGroup(gv2);
+
+  // arc block
+  Arc a1(u1, v1);
+  g.AddArc(a1);
+  gexp1->AddArc(a1);
+  Arc a2(u2, v2);
+  g.AddArc(a2);
+  gexp2->AddArc(a2);
+  
+  std::vector<ExchangeGraph::Ptr> obs = Partition(g);
+  // EXPECT_EQ(2, obs.size());
+  // EXPECT_EQ(exp, obs);
+}
+
+TEST(ExGraphTests, NoPart) {
+  ExchangeGraph g;
+
+  ExchangeNode::Ptr u(new ExchangeNode());
+  ExchangeNode::Ptr v(new ExchangeNode());
+  ExchangeNode::Ptr w(new ExchangeNode());
+  ExchangeNode::Ptr x(new ExchangeNode());
+  RequestGroup::Ptr prs(new RequestGroup());
+  ExchangeNodeGroup::Ptr pss(new ExchangeNodeGroup());
+
+  Arc a1(u, v);
+  Arc a2(u, w);
+  Arc a3(x, w);
+
+  g.AddSupplyGroup(pss);
+  g.AddRequestGroup(prs);
+
 }

@@ -6,7 +6,6 @@
 #include <string>
 #include <utility>
 #include <vector>
-
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
 
@@ -259,6 +258,8 @@ class ExchangeGraph {
   std::map<int, Arc> arc_by_id_;
   int next_arc_id_;
 };
+
+std::vector<ExchangeGraph::Ptr> Partition(ExchangeGraph& g);
 
 }  // namespace cyclus
 
