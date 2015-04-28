@@ -1,6 +1,5 @@
 #!/bin/bash
 
-set -x
 set -e
 
 die() {
@@ -30,23 +29,25 @@ git clone git@github.com:pyne/pyne
 cd pyne
 ./amalgamate.py -s pyne.cc -i pyne.h
 cp pyne.* $BASE/src
-nuc_data_make -o cyclus_nuc_data.h5 \
- -m atomic_mass,scattering_lengths,decay,simple_xs,materials,eaf,wimsd_fpy,nds_fpy
-cp cyclus_nuc_data.h5 $BASE/release
 cd ..
 rm -rf pyne
 
 # nuc_data upload
 cd $BASE/release
+nuc_data_make -o cyclus_nuc_data.h5 \
+    -m atomic_mass,scattering_lengths,decay,simple_xs,materials,eaf,wimsd_fpy,nds_fpy
 python upload_nuc_data.py
-rm cyclus_nuc_data.h5
+rm -r build_nuc_data cyclus_nuc_data.h5
 cd $BASE
 
-echo "You're almost done!
+echo "
+*-----------------------------------------------------------------------------*
+You're almost done!
 
 Cyclus, Cycamore, and Cycstub release candidates still need to be committed and
 pushed upstream
 
 Once the candidate passes CI it should be ready to be merged into develop and
 master.
+*-----------------------------------------------------------------------------*
 "
