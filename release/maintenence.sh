@@ -39,6 +39,7 @@ rm -rf pyne
 # nuc_data upload
 cd $BASE/release
 python upload_nuc_data.py
+rm cyclus_nuc_data.h5
 cd $BASE
 
 echo "You're almost done!
