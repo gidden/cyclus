@@ -36,15 +36,21 @@ def push_rackspace(fname, cred_file='rs.cred'):
     cf = pyrax.cloudfiles
     with open(fname, 'rb') as f:
         fdata = f.read()
-    cont = cf.get_container("pyne-data")
-    obj = cf.store_object("pyne-data", fname, fdata)
+    cont = cf.get_container("cyclus-data")
+    obj = cf.store_object("cyclus-data", fname, fdata)
     cont.purge_cdn_object(fname)
 
+def setup():
+    pyrax.set_setting("identity_type", "rackspace")
+    pyrax.set_setting('region', 'ORD')
+    pyrax.set_credential_file('rs.cred')
+    
+def main():
+    setup()
+    cf = pyrax.cloudfiles
+    print("list_containers: {}".format(cf.list_containers()))
+    print("get_all_containers: {}".format(cf.get_all_containers()))
+    push_rackspace('cyclus_nuc_data.h5')
 
-pyrax.set_setting("identity_type", "rackspace")
-pyrax.set_setting('region', 'ORD')
-pyrax.set_credential_file('rs.cred')
-cf = pyrax.cloudfiles
-print("list_containers: {}".format(cf.list_containers()))
-print("get_all_containers: {}".format(cf.get_all_containers()))
-push_rackspace('cyclus_nuc_data.h5')
+if __name__ == '__main__':
+    main()
