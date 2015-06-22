@@ -22,6 +22,7 @@ datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
       <optional>
         <element name="solver"> 
           <interleave>
+            <optional><element name="config">
             <choice>
               <element name="greedy">
                 <interleave>
@@ -38,6 +39,7 @@ datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
                 </interleave>
               </element>
             </choice>
+            </element></optional>
             <optional>
               <element name="exclusive_orders_only">
                 <data type="boolean" />
