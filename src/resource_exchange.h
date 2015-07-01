@@ -102,6 +102,12 @@ class ResourceExchange {
             this));
   }
 
+  /// check if this is an empty exchange (i.e., no requests exist, therefore no
+  /// bids)
+  bool Empty() {
+    return ex_ctx_.bids_by_request.empty();
+  }
+
  private:
   /// @brief queries a given facility agent for
   void AddRequests_(Trader* t) {
@@ -133,7 +139,7 @@ class ResourceExchange {
       m = m->parent();
     }
   }
-
+  
   Context* ctx_;
   ExchangeContext<T> ex_ctx_;
 };
