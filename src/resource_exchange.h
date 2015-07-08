@@ -64,7 +64,7 @@ class ResourceExchange {
   ///
   /// @param ctx the simulation context
   ResourceExchange(Context* ctx) {
-    ctx_ = ctx;
+    sim_ctx_ = ctx;
   }
 
   inline ExchangeContext<T>& ex_ctx() {
@@ -73,7 +73,7 @@ class ResourceExchange {
 
   /// @brief queries traders and collects all requests for bids
   void AddAllRequests() {
-    std::set<Trader*> traders = ctx_->traders();
+    std::set<Trader*> traders = sim_ctx_->traders();
     std::for_each(
         traders.begin(),
         traders.end(),
@@ -83,7 +83,7 @@ class ResourceExchange {
 
   /// @brief queries traders and collects all responses to requests for bids
   void AddAllBids() {
-    std::set<Trader*> traders = ctx_->traders();
+    std::set<Trader*> traders = sim_ctx_->traders();
     std::for_each(
         traders.begin(),
         traders.end(),
@@ -102,11 +102,9 @@ class ResourceExchange {
             this));
   }
 
-  /// check if this is an empty exchange (i.e., no requests exist, therefore no
-  /// bids)
-  bool Empty() {
-    return ex_ctx_.bids_by_request.empty();
-  }
+  /// return true if this is an empty exchange (i.e., no requests exist,
+  /// therefore no bids)
+  inline bool Empty() { return ex_ctx_.bids_by_request.empty(); }
 
  private:
   /// @brief queries a given facility agent for
@@ -140,7 +138,7 @@ class ResourceExchange {
     }
   }
   
-  Context* ctx_;
+  Context* sim_ctx_;
   ExchangeContext<T> ex_ctx_;
 };
 
