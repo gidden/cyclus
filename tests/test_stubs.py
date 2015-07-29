@@ -9,7 +9,7 @@ from contextlib import contextmanager
 
 @contextmanager
 def tmpdir():
-    d = tempfile.mkdtemp()
+    d = tempfile.mkdtemp(dir=os.path.dirname(os.path.realpath(__file__)))
     yield d
     shutil.rmtree(d)
 
