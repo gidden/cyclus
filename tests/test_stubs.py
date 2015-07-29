@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import os
 import subprocess
 import shutil
@@ -10,6 +12,14 @@ def tmpdir():
     d = tempfile.mkdtemp()
     yield d
     shutil.rmtree(d)
+
+@contextmanager
+def tmpenviron(**mapping):
+    environ = dict(os.environ)
+    os.environ.update(mapping)
+    yield
+    os.environ.clear()
+    os.environ.update(environ)
 
 def test_stubs():
     flavors = ['facility', 'inst', 'region']
@@ -37,6 +47,16 @@ def test_stubs():
         cmd = tst_cmd.format(pth)
         print(cmd)
         subprocess.call(cmd.split(), shell=(os.name=='nt'), cwd=inst)
+        
+        # run cyclus
+        run_cmd = 'cyclus {}'
+        pth = os.path.join(inst, 'lib', 'cyclus')
+        with tmpenviron(CYCLUS_PATH=pth):
+            for flav in flavors:
+                fname = 'example_tmp_{}.xml'.format(flav)
+                cmd = run_cmd.format(fname)
+                print(cmd)
+                subprocess.call(cmd.split(), shell=(os.name=='nt'), cwd=src)
 
 if __name__ == '__main__':
     test_stubs()
