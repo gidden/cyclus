@@ -8,12 +8,17 @@
   <archetypes>
     <spec><path>libpath</path><lib>libname</lib><name>StubRegion</name></spec>
     <spec><lib>agents</lib><name>NullInst</name></spec>
+    <spec><lib>agents</lib><name>Source</name></spec>
   </archetypes>
 
   <facility>
     <name>OneFacility</name>
     <config>
-      <StubFacility />
+      <Source>
+        <commod>commodity</commod>
+        <recipe_name>commod_recipe</recipe_name>
+        <capacity>1.00</capacity>
+      </Source>
     </config>
   </facility>
 
@@ -31,5 +36,14 @@
       <config> <NullInst /> </config>
     </institution>
   </region>
+
+  <recipe>
+    <name>commod_recipe</name>
+    <basis>mass</basis>
+    <nuclide>
+      <id>H1</id>
+      <comp>1</comp>
+    </nuclide>
+  </recipe>
 
 </simulation>
