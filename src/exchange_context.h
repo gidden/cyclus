@@ -11,6 +11,7 @@
 #include "bid_portfolio.h"
 #include "request.h"
 #include "request_portfolio.h"
+#include "logger.h"
 
 namespace cyclus {
 
@@ -56,6 +57,7 @@ struct ExchangeContext {
     assert(pr->requester() != NULL);
     requesters.insert(pr->requester());
     commod_requests[pr->commodity()].push_back(pr);
+    LOG(LEV_DEBUG2, "DRE") << "Adding " << Print(pr);
   }
 
   /// @brief adds a bid to the context
@@ -75,12 +77,13 @@ struct ExchangeContext {
   /// @param pb the bid
   void AddBid(Bid<T>* pb) {
     assert(pb->bidder() != NULL);
+    Request<T>* req = pb->request();
     bidders.insert(pb->bidder());
-
-    bids_by_request[pb->request()].push_back(pb);
-
-    trader_prefs[pb->request()->requester()][pb->request()].insert(
-        std::make_pair(pb, pb->request()->preference()));
+    bids_by_request[req].push_back(pb);
+    trader_prefs[req->requester()][req].insert(
+        std::make_pair(pb, req->preference()));
+    LOG(LEV_DEBUG2, "DRE") << "Adding " << Print(pb);
+    LOG(LEV_DEBUG3, "DRE") << "Connecting " << Print(req) << " with " << Print(pb);
   }
 
   /// @brief a reference to an exchange's set of requests
@@ -104,6 +107,23 @@ struct ExchangeContext {
 
   /// @brief maps commodity name to requests for that commodity
   std::map<Trader*, typename PrefMap<T>::type> trader_prefs;
+
+  std::string Print(Request<T>* req) {    
+    std::stringstream req_s;
+    req_s << "Request for " << req->target()->quantity()
+          << " of " << req->commodity()
+          << " from " << req->requester()->manager()->prototype()
+          << req->requester()->manager()->id()
+          << " with original preference " << req->preference(); 
+    return req_s.str();
+  }
+
+  std::string Print(Bid<T>* bid) {      
+    std::stringstream bid_s;
+    bid_s << "Bid for " << bid->offer()->quantity() 
+          << " from " << bid->bidder()->manager()->prototype()
+          << bid->bidder()->manager()->id(); 
+  }
 };
 
 }  // namespace cyclus
